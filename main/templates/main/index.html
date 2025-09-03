@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Translator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+            font-family: 'Roboto', Arial, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background: #fff;
+            padding: 2.5rem 2rem;
+            border-radius: 1.2rem;
+            box-shadow: 0 8px 32px rgba(44, 62, 80, 0.12);
+            max-width: 350px;
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+            color: #2d3e50;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+        input[type="text"] {
+            padding: 0.7rem 1rem;
+            border: 1px solid #bfc9d9;
+            border-radius: 0.6rem;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input[type="text"]:focus {
+            border-color: #5c9ded;
+        }
+        #languageSearch {
+            padding: 0.7rem 0.0rem;
+            border: 1px solid #bfc9d9;
+            border-radius: 0.6rem;
+            font-size: 1rem;
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+        select {
+            padding: 0.7rem 1rem;
+            border: 1px solid #bfc9d9;
+            border-radius: 0.6rem;
+            font-size: 1rem;
+            background: #f7fafd;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        select:focus {
+            border-color: #5c9ded;
+        }
+        button[type="submit"] {
+            padding: 0.8rem 1rem;
+            background: linear-gradient(90deg, #5c9ded 0%, #4a90e2 100%);
+            color: #fff;
+            border: none;
+            border-radius: 0.6rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
+            transition: background 0.2s;
+        }
+        button[type="submit"]:hover {
+            background: linear-gradient(90deg, #4a90e2 0%, #5c9ded 100%);
+        }
+        .output {
+            margin-top: 2rem;
+            text-align: center;
+        }
+        .output h2 {
+            color: #4a90e2;
+            font-size: 1.2rem;
+            margin-bottom: 0.7rem;
+            font-weight: 700;
+        }
+        .output-box {
+            background: linear-gradient(90deg, #e0eafc 0%, #cfdef3 100%);
+            border-radius: 0.8rem;
+            padding: 1.2rem;
+            font-size: 1.1rem;
+            color: #2d3e50;
+            box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
+            word-break: break-word;
+            min-height: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+    <script>
+        function filterLanguages() {
+            var input = document.getElementById('languageSearch');
+            var filter = input.value.toLowerCase();
+            var select = document.getElementById('languageSelect');
+            var options = select.options;
+            for (var i = 0; i < options.length; i++) {
+                var txt = options[i].text.toLowerCase();
+                if (i === 0) {
+                    options[i].style.display = '';
+                    continue;
+                }
+                if (txt.indexOf(filter) > -1) {
+                    options[i].style.display = '';
+                } else {
+                    options[i].style.display = 'none';
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>🌐 Translator</h1>
+        <form method="post" autocomplete="off">
+            {% csrf_token %}
+            <input type="text" name="translate" placeholder="Enter text to translate" required>
+            <input type="text" id="languageSearch" placeholder="Search language..." onkeyup="filterLanguages()">
+            <select required name="language" id="languageSelect">
+                <option value="" disabled selected>Select language</option>
+                <!-- Indian Languages -->
+                <option value="Hindi">Hindi</option>
+                <option value="Marathi">Marathi</option>
+                <option value="Bengali">Bengali</option>
+                <option value="Gujarati">Gujarati</option>
+                <option value="Tamil">Tamil</option>
+                <option value="Telugu">Telugu</option>
+                <option value="Kannada">Kannada</option>
+                <option value="Malayalam">Malayalam</option>
+                <option value="Punjabi">Punjabi</option>
+                <option value="Odia">Odia</option>
+                <!-- Foreign Languages -->
+                <option value="German">German</option>
+                <option value="French">French</option>
+                <option value="Spanish">Spanish</option>
+                <option value="Italian">Italian</option>
+                <option value="Russian">Russian</option>
+                <option value="Chinese">Chinese</option>
+                <option value="Japanese">Japanese</option>
+                <option value="Korean">Korean</option>
+                <option value="Arabic">Arabic</option>
+                <option value="Portuguese">Portuguese</option>
+                <option value="Turkish">Turkish</option>
+                <option value="Dutch">Dutch</option>
+                <option value="Swedish">Swedish</option>
+                <option value="Greek">Greek</option>
+                <option value="Thai">Thai</option>
+                <option value="Vietnamese">Vietnamese</option>
+            </select>
+            <button type="submit">Translate</button>
+        </form>
+        {% if translation %}
+        <div class="output">
+            <h2>Translation</h2>
+            <div class="output-box">{{ translation }}</div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
